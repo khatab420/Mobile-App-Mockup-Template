@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Screenshot Template</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .controls h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: start;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-group label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .control-group input, .control-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .control-group input:focus, .control-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .color-input {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn-download {
+            background: #28a745;
+            grid-column: 1 / -1;
+            justify-self: center;
+            margin-top: 10px;
+        }
+
+        .btn-download:hover {
+            background: #218838;
+        }
+
+        .screenshot-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .screenshot-frame {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .screenshot-frame:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .screenshot-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color, #ff6b6b), var(--secondary-color, #4ecdc4));
+            background-size: 300% 100%;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .phone-mockup {
+            background: #1a1a1a;
+            border-radius: 25px;
+            padding: 8px;
+            margin: 0 auto 20px;
+            width: 240px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+        }
+
+        .phone-screen {
+            background: #f8f9fa;
+            border-radius: 18px;
+            height: 420px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .phone-screen:hover {
+            transform: scale(1.02);
+        }
+
+        .screenshot-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #e3f2fd, #f3e5f5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            border: 2px dashed #ccc;
+            border-radius: 16px;
+            transition: all 0.2s;
+        }
+
+        .screenshot-placeholder:hover {
+            border-color: #667eea;
+            background: linear-gradient(45deg, #e8f0fe, #f8e6ff);
+        }
+
+        .screenshot-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .feature-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-color, #667eea), var(--secondary-color, #764ba2));
+            border-radius: 12px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .hide-controls {
+            display: none !important;
+        }
+
+        .screenshot-mode {
+            padding-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls" id="controls">
+        <h3>🎨 Customize Your App Screenshot</h3>
+        <div class="control-grid">
+            <div class="control-group">
+                <label>App Title</label>
+                <input type="text" id="titleInput" value="Amazing Feature" placeholder="Enter app title">
+            </div>
+            
+            <div class="control-group">
+                <label>Description</label>
+                <input type="text" id="descInput" value="Describe your app's key feature that makes it stand out" placeholder="Enter description">
+            </div>
+            
+            <div class="control-group">
+                <label>App Icon</label>
+                <div style="display: flex; gap: 8px;">
+                    <select id="iconSelect" style="flex: 1;">
+                        <option value="📱">📱 Phone</option>
+                        <option value="⚡">⚡ Lightning</option>
+                        <option value="🎨">🎨 Art</option>
+                        <option value="🚀">🚀 Rocket</option>
+                        <option value="💎">💎 Diamond</option>
+                        <option value="🔥">🔥 Fire</option>
+                        <option value="⭐">⭐ Star</option>
+                        <option value="🎯">🎯 Target</option>
+                    </select>
+                    <button class="btn" onclick="document.getElementById('iconInput').click()" style="padding: 8px 12px; font-size: 12px;">Upload</button>
+                </div>
+                <input type="file" id="iconInput" class="file-input" accept="image/*">
+            </div>
+            
+            <div class="control-group">
+                <label>Primary Color</label>
+                <input type="color" id="primaryColor" value="#667eea" class="color-input">
+            </div>
+            
+            <div class="control-group">
+                <label>Secondary Color</label>
+                <input type="color" id="secondaryColor" value="#764ba2" class="color-input">
+            </div>
+            
+            <div class="control-group">
+                <label>Screenshot</label>
+                <button class="btn" onclick="document.getElementById('fileInput').click()">Upload Image</button>
+                <input type="file" id="fileInput" class="file-input" accept="image/*">
+            </div>
+            
+            <button class="btn btn-download" onclick="toggleScreenshotMode()">📸 Screenshot Mode</button>
+           
+        </div>
+    </div>
+
+    <div class="screenshot-container">
+        <div class="screenshot-frame" id="frame">
+            <div class="app-icon" id="appIcon">📱</div>
+            <div class="phone-mockup">
+                <div class="phone-screen" onclick="document.getElementById('fileInput').click()">
+                    <div class="screenshot-placeholder" id="placeholder">
+                        <div style="font-size: 24px; margin-bottom: 10px;">📸</div>
+                        <div>Click here to upload your app screenshot</div>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-title" id="featureTitle">Amazing Feature</div>
+            <div class="feature-description" id="featureDescription">Describe your app's key feature that makes it stand out from the competition</div>
+        </div>
+    </div>
+
+    <script>
+        let screenshotMode = false;
+
+        // Load app icon
+        document.getElementById('iconInput').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('appIcon').innerHTML = 
+                        `<img src="${e.target.result}" alt="App Icon">`;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Load image function
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('placeholder').innerHTML = 
+                        `<img src="${e.target.result}" alt="App Screenshot" class="screenshot-img">`;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Update title
+        document.getElementById('titleInput').addEventListener('input', function(e) {
+            document.getElementById('featureTitle').textContent = e.target.value;
+        });
+
+        // Update description
+        document.getElementById('descInput').addEventListener('input', function(e) {
+            document.getElementById('featureDescription').textContent = e.target.value;
+        });
+
+        // Update icon
+        document.getElementById('iconSelect').addEventListener('change', function(e) {
+            const appIcon = document.getElementById('appIcon');
+            // Only update if it's an emoji (not a custom uploaded icon)
+            if (!appIcon.querySelector('img')) {
+                appIcon.textContent = e.target.value;
+            }
+        });
+
+        // Download screenshot function  
+        function downloadScreenshot() {
+            const frame = document.getElementById('frame');
+            
+            // Create a canvas element
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size based on the frame
+            const rect = frame.getBoundingClientRect();
+            canvas.width = rect.width * 2; // 2x for better quality
+            canvas.height = rect.height * 2;
+            
+            // Scale the context for high DPI
+            ctx.scale(2, 2);
+            
+            // Create a new image from the frame
+            const frameClone = frame.cloneNode(true);
+            frameClone.style.position = 'absolute';
+            frameClone.style.left = '-9999px';
+            frameClone.style.transform = 'none';
+            document.body.appendChild(frameClone);
+            
+            // Use dom-to-image alternative approach
+            frameToCanvas(frame).then(dataUrl => {
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'app-screenshot.png';
+                link.href = dataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Success message
+                showMessage('✅ Screenshot downloaded successfully!', '#28a745');
+            }).catch(err => {
+                console.error('Download error:', err);
+                showMessage('❌ Download failed. Please use right-click → Save image instead.', '#dc3545');
+            });
+            
+            // Clean up
+            if (frameClone.parentNode) {
+                document.body.removeChild(frameClone);
+            }
+        }
+        
+        // Convert frame to canvas data URL
+        function frameToCanvas(element) {
+            return new Promise((resolve, reject) => {
+                try {
+                    // Create SVG with foreign object
+                    const rect = element.getBoundingClientRect();
+                    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    svg.setAttribute('width', rect.width);
+                    svg.setAttribute('height', rect.height);
+                    
+                    const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+                    foreignObject.setAttribute('width', '100%');
+                    foreignObject.setAttribute('height', '100%');
+                    
+                    // Clone element and its styles
+                    const clone = element.cloneNode(true);
+                    const styles = getComputedStyle(element);
+                    
+                    // Apply computed styles to clone
+                    for (let i = 0; i < styles.length; i++) {
+                        const prop = styles[i];
+                        clone.style[prop] = styles.getPropertyValue(prop);
+                    }
+                    
+                    foreignObject.appendChild(clone);
+                    svg.appendChild(foreignObject);
+                    
+                    // Convert to data URL
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+                    const svgUrl = URL.createObjectURL(svgBlob);
+                    
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = rect.width * 2;
+                        canvas.height = rect.height * 2;
+                        const ctx = canvas.getContext('2d');
+                        ctx.scale(2, 2);
+                        ctx.drawImage(img, 0, 0);
+                        URL.revokeObjectURL(svgUrl);
+                        resolve(canvas.toDataURL('image/png'));
+                    };
+                    img.onerror = reject;
+                    img.src = svgUrl;
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+        
+        // Show message helper
+        function showMessage(text, color) {
+            const msg = document.createElement('div');
+            msg.textContent = text;
+            msg.style.cssText = `position:fixed;top:10px;left:50%;transform:translateX(-50%);background:${color};color:white;padding:10px 20px;border-radius:5px;z-index:9999;`;
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 3000);
+        }
+
+        // Update colors
+        function updateColors() {
+            const primary = document.getElementById('primaryColor').value;
+            const secondary = document.getElementById('secondaryColor').value;
+            
+            document.documentElement.style.setProperty('--accent-color', primary);
+            document.documentElement.style.setProperty('--secondary-color', secondary);
+            
+            // Update body background
+            document.body.style.background = `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`;
+        }
+
+        document.getElementById('primaryColor').addEventListener('input', updateColors);
+        document.getElementById('secondaryColor').addEventListener('input', updateColors);
+
+        // Toggle screenshot mode
+        function toggleScreenshotMode() {
+            const controls = document.getElementById('controls');
+            const body = document.body;
+            
+            screenshotMode = !screenshotMode;
+            
+            if (screenshotMode) {
+                controls.classList.add('hide-controls');
+                body.classList.add('screenshot-mode');
+                // Show a temporary message
+                const msg = document.createElement('div');
+                msg.textContent = 'Screenshot mode active! Take your screenshot now. Refresh page to return to editing.';
+                msg.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#28a745;color:white;padding:10px 20px;border-radius:5px;z-index:9999;';
+                document.body.appendChild(msg);
+                setTimeout(() => msg.remove(), 3000);
+            } else {
+                controls.classList.remove('hide-controls');
+                body.classList.remove('screenshot-mode');
+            }
+        }
+
+        // Initialize colors
+        updateColors();
+
+        // Add smooth animations
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('focus', () => {
+                element.style.transform = 'scale(1.02)';
+            });
+            
+            element.addEventListener('blur', () => {
+                element.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
